@@ -1,0 +1,24 @@
+-
+  I force update account 1111 and 1121
+-
+  !python {model: account.account}: |
+    account_type_liquidity = self.env.ref('account.data_account_type_liquidity')
+    account_tag_111 = self.env.ref('l10n_vn_tt200.account_tag_111')
+    account_tag_112 = self.env.ref('l10n_vn_tt200.account_tag_112')
+    cash_accounts = self.env['account.account'].search(
+      [('code', '=', '1111'),
+       ('tag_ids', 'not in', [account_tag_111.id]),
+       ('user_type_id', '=', account_type_liquidity.id)])
+    if cash_accounts:
+      cash_accounts.write({
+        'name': 'Tiền Việt Nam',
+        'tag_ids': [[6, 0, [account_tag_111.id]]]})
+
+    bank_accounts = self.env['account.account'].search(
+      [('code', '=', '1121'),
+       ('tag_ids', 'not in', [account_tag_112.id]),
+       ('user_type_id', '=', account_type_liquidity.id)])
+    if bank_accounts:
+      bank_accounts.write({
+        'name': 'Tiền Việt Nam',
+        'tag_ids': [[6, 0, [account_tag_112.id]]]})
